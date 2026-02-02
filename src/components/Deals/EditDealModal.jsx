@@ -18,7 +18,8 @@ const EditDealModal = ({ isOpen, onClose, deal, columns, onDealUpdated, onDealDe
         value: '',
         column_id: '',
         instagram: '',
-        whatsapp: ''
+        whatsapp: '',
+        closing_date: ''
     });
 
     useEffect(() => {
@@ -29,7 +30,8 @@ const EditDealModal = ({ isOpen, onClose, deal, columns, onDealUpdated, onDealDe
                 value: deal.faturamento_mensal || deal.faturamento || deal.value || 0,
                 column_id: deal.stage || deal.columnId || deal.column_id || '',
                 instagram: deal.instagram || '',
-                whatsapp: deal.whatsapp || ''
+                whatsapp: deal.whatsapp || '',
+                closing_date: deal.data_fechamento ? new Date(deal.data_fechamento).toISOString().slice(0, 16) : ''
             });
             setActiveTab('general'); // Reset tab on open
         }
@@ -47,6 +49,20 @@ const EditDealModal = ({ isOpen, onClose, deal, columns, onDealUpdated, onDealDe
         setLoading(true);
 
         try {
+            // AUTOMATIC CLOSING DATE LOGIC
+            const selectedColumn = columns.find(c => c.id === formData.column_id);
+            const isClosingStage = selectedColumn?.status === 'won' || selectedColumn?.status === 'lost';
+
+            // If moving to closed stage: Set NOW() if not already set
+            // If moving back to active: Set NULL
+            // Keep existing date if just editing details within closed stage
+
+            let finalClosingDate = isClosingStage
+                ? (deal.data_fechamento || new Date().toISOString())
+                : null;
+
+            // Override if user manually cleared it (not possible anymore via UI, but good for logic safety)
+
             const { data, error } = await supabase
                 .from('central_vendas')
                 .update({
@@ -55,7 +71,8 @@ const EditDealModal = ({ isOpen, onClose, deal, columns, onDealUpdated, onDealDe
                     faturamento_mensal: parseFloat(formData.value || 0),
                     stage: formData.column_id,
                     instagram: formData.instagram,
-                    whatsapp: formData.whatsapp
+                    whatsapp: formData.whatsapp,
+                    data_fechamento: finalClosingDate
                 })
                 .eq('id', deal.id)
                 .select();

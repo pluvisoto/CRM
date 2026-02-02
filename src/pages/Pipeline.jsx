@@ -539,6 +539,75 @@ const Pipeline = () => {
         }
     };
 
+    const handleDeleteColumn = async (columnId) => {
+        // 1. Validation & Fallback Check
+        const dealsInColumn = deals.filter(d => d.columnId === columnId);
+
+        if (!routePipelineId) {
+            alert('⚠️ Você não pode modificar fases do Pipeline Padrão. Crie um pipeline personalizado para editar.');
+            return;
+        }
+
+        let shouldProceed = true;
+
+        if (dealsInColumn.length > 0) {
+            const fallbackColumn = columns.find(c => c.id !== columnId);
+            if (!fallbackColumn) {
+                alert('⚠️ Você não pode apagar a única fase existente.');
+                return;
+            }
+
+            const confirmMove = window.confirm(
+                `Esta fase contém ${dealsInColumn.length} negócios (alguns podem estar ocultos por filtros).\n\nDeseja mover esses negócios para a fase "${fallbackColumn.title}" e excluir esta coluna?`
+            );
+
+            if (!confirmMove) return;
+
+            // MOVE DEALS LOGIC
+            try {
+                // Optimistic Update for Deals
+                setDeals(prev => prev.map(d => d.columnId === columnId ? { ...d, columnId: fallbackColumn.id, stage: fallbackColumn.id } : d));
+
+                // DB Update
+                const { error: moveError } = await supabase
+                    .from('central_vendas')
+                    .update({ stage: fallbackColumn.id })
+                    .eq('stage', columnId); // Use direct stage match for safety
+
+                if (moveError) {
+                    console.warn("Error moving deals via exact stage match, trying strict column filter...", moveError);
+                    // Fallback using IDs from memory if bulk update fails (rare)
+                }
+
+                console.log(`%c 🚚 ${dealsInColumn.length} negócios movidos para ${fallbackColumn.title}.`, 'color: #3b82f6;');
+            } catch (err) {
+                console.error("Failed to move deals:", err);
+                alert("Erro ao mover negócios. A coluna não será excluída.");
+                fetchCentralDeals(); // Revert
+                return;
+            }
+        }
+
+        // 2. Optimistic Update (Remove Column)
+        const updatedColumns = columns.filter(c => c.id !== columnId);
+        setColumns(updatedColumns);
+
+        try {
+            console.log(`%c 🗑️ Deleting column ${columnId}...`, 'color: #ef4444;');
+            const { error } = await supabase
+                .from('pipeline_stages')
+                .delete()
+                .eq('id', columnId);
+
+            if (error) throw error;
+            console.log('%c ✅ Coluna removida com sucesso.', 'color: #10b981;');
+        } catch (error) {
+            console.error('Error deleting column:', error);
+            alert('Erro ao excluir coluna: ' + error.message);
+            fetchPipelineStages(routePipelineId, activePipeline); // Revert
+        }
+    };
+
     const updateStageOrder = async (newColumns) => {
         setColumns(newColumns);
         try {

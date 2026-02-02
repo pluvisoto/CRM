@@ -42,7 +42,8 @@ const NewDealModal = ({ isOpen, onClose, onDealCreated, columns, pipelineType = 
                         stage: startColumn,
                         created_by: user?.id,
                         instagram: formData.instagram,
-                        whatsapp: formData.whatsapp
+                        whatsapp: formData.whatsapp,
+                        created_at: formData.created_at ? new Date(formData.created_at).toISOString() : undefined
                     }
                 ])
                 .select();

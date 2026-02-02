@@ -1,10 +1,11 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import MainLayout from './layouts/MainLayout';
+import Finance from './pages/Finance';
 import Login from './pages/Login';
 import Settings from './pages/Settings';
 import TeamSettings from './pages/TeamSettings';
 import Pipeline from './pages/Pipeline';
-import Finance from './pages/Finance';
+
 import Contacts from './pages/Contacts';
 import Dashboard from './pages/Dashboard';
 import Messages from './pages/Messages';
@@ -38,9 +39,11 @@ function App() {
         <Route path="/pending" element={<PendingApproval />} />
 
         <Route path="/" element={
-          <ProtectedRoute>
-            <MainLayout />
-          </ProtectedRoute>
+          <ErrorBoundary>
+            <ProtectedRoute>
+              <MainLayout />
+            </ProtectedRoute>
+          </ErrorBoundary>
         }>
           <Route index element={<Navigate to="/pipeline" replace />} />
           <Route path="pipeline/:id?" element={
@@ -54,7 +57,12 @@ function App() {
           <Route path="reports" element={<Reports />} />
           <Route path="settings" element={<Settings />} />
           <Route path="team" element={<TeamSettings />} />
-          <Route path="finance/*" element={<Finance />} />
+          <Route path="finance/*" element={
+            <ErrorBoundary>
+              <Finance />
+            </ErrorBoundary>
+          } />
+
         </Route>
       </Routes>
     </Router>

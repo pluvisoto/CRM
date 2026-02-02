@@ -33,6 +33,15 @@ export const DealCardContent = forwardRef(({ deal, isDragging, style, ...props }
             ))}
           </div>
 
+          <div className="deal-stats" style={{ display: 'flex', gap: '12px', marginTop: '4px', fontSize: '0.7rem', color: 'rgba(255,255,255,0.4)' }}>
+            <div title="Data de Criação" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+              📅 {new Date(deal.created_at).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' })}
+            </div>
+            <div title="Tempo na etapa atual (aprox.)" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+              ⏱️ {Math.floor((new Date() - new Date(deal.updated_at || deal.created_at)) / (1000 * 60 * 60 * 24))}d no status
+            </div>
+          </div>
+
           {(deal.instagram || deal.whatsapp) && (
             <div className="deal-socials">
               {deal.instagram && (
