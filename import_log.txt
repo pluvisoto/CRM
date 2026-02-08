@@ -1,0 +1,86 @@
+﻿[dotenv@17.2.3] injecting env (2) from .env -- tip: ÔÜÖ´©Å  specify custom .env file path with { path: '/custom/path/.env' }
+­ƒÜÇ Starting Business Plan import...
+­ƒôü Reading file: business_plan.xlsx
+­ƒôï Sheets encontradas: [
+  'Valores - Lucro e Perda',
+  '2026',
+  '2027',
+  '2028',
+  '2029',
+  '2030',
+  'Resultado 5 Anos',
+  'Simulador Tributario',
+  'Valores - Balan├ºo Patrimonial',
+  'Valores - Fluxo de caixa',
+  'Valores - Empatar',
+  'Valores - An├ílise de Raz├úo',
+  'Valores - Financiamento',
+  'Valores - Ativos',
+  'Valores - Dividendo',
+  'Valores - Contas a receber',
+  'Valores - Contas a pagar',
+  'Valores - Imposto de Renda',
+  'Valores - Sales Tax',
+  'Valores - Invent├írio',
+  'Valores - Capital de giro'
+]
+
+­ƒôè Processing "Valores - Lucro e Perda"...
+   Total rows: 1000
+   Headers found: 92
+   Month columns found: 35
+   Sample months: [ "Jan '26", "Mar '26", "Jun '26" ]
+   Category column: 3 ("Feb '26")
+
+Ô£à Processed 54 rows
+­ƒôè Total records to insert: 1889
+ÔÜá´©Å  0 errors found
+
+­ƒôè Sample records:
+   2026-01-01 | 16548.84 | R$ 8358.00 
+   2026-03-01 | 16548.84 | R$ 24572.52 
+   2026-06-01 | 16548.84 | R$ 47699.11 
+   2026-07-01 | 16548.84 | R$ 55104.29 
+   2026-11-01 | 16548.84 | R$ 83270.75 
+
+­ƒº╣ Cleaning existing test data...
+   Ô£à Existing data cleaned
+
+­ƒÆ¥ Inserting into database...
+node : ÔØî Database 
+error at batch 1: new 
+row violates 
+row-level security 
+policy for table 
+"financial_baseline"
+No linha:1 caractere:1
++ node scripts\import_
+real_data.js 
+business_plan.xlsx 
+2>&1 | Out-File - ...
++ ~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~
+    + CategoryInfo    
+          : NotSpeci  
+  fied: (ÔØî Databa   
+ se er...ncial_bas    
+eline":String) []    
+, RemoteException
+    + FullyQualifiedE 
+   rrorId : NativeCo  
+  mmandError
+ 
+Sample failing 
+record: {
+  competencia: 
+'2026-01-01',
+  categoria: 
+'16548.84',
+  subcategoria: null,
+  valor_planejado: 
+8358,
+  tipo_custo: 'Fixo',
+  future_module_hr: 
+false
+}

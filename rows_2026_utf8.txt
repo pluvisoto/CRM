@@ -1,0 +1,63 @@
+﻿Scanning sheet: 2026
+Row 1: Receita Total (Valor total faturado (Faturamento Bruto) antes de qualquer desconto ou imposto.)
+Row 2: Impostos (Preencher Aliquota em C3)
+Row 3: Receita L├¡quida (O dinheiro que realmente pertence ├á empresa ap├│s o governo retirar os impostos sobre a venda (ex: DAS 18%).)
+Row 4: Receita Fixa
+Row 5: Mensalidade
+Row 6: Usu├írios (Preencher Meta de Vendas Mensal em C7)
+Row 7: Mensalidade por Cliente (Preencher Churn em C8)
+Row 8: Receita Vari├ível
+Row 9: Comiss├úo sobre Vendas Recuperadas
+Row 10: M├®dia - Suposi├º├úo de Comiss├úo por Cliente (M├¡nimo da Garantia deixar C12 sem preenchimento)
+Row 11: M├®dia - Suposi├º├úo de Comiss├úo por Cliente (Preencher Valor em C12)
+Row 12: Margem Bruta (O que sobra para pagar a estrutura da empresa ap├│s descontar o imposto e o custo direto do produto/servi├ºo.)
+Row 13: Resultado Bruto (%)
+Row 14: 
+Row 15: Despesa total
+Row 16: Despesas com Vendas (Gastos vari├íveis ligados diretamente ├á transa├º├úo, como taxas de checkout, ferramentas ligadas a venda e comiss├Áes.)
+Row 17: Taxas de Checkout e Plataformas (Preencher Taxa em C18)
+Row 18: Ferramentas Operacionais
+Row 19: Servidor
+Row 20: API Oficial Whatsapp
+Row 21: Tokens GPT
+Row 22: Telefone
+Row 23: Despesas Operacionais (Custos fixos e vari├íveis necess├írios para manter a "m├íquina" rodando (Sal├írios, Aluguel, Software).)
+Row 24: Despesa com Folha de Pagamento (M├úo de Obra Indireta)
+Row 25: Administra├º├úo
+Row 26: Pro Labore - CEO
+Row 27: Pro Labore - Operacional
+Row 28: Pro Labore - Operacional
+Row 29: Pro Labore - Operacional
+Row 30: Auxiliar de Servi├ºos Gerais (Preencher Quantidade em C31)
+Row 31: Operacional
+Row 32: Desenvolvedor (Preencher Quantidade em C33)
+Row 33: Gestor de Tr├ífego (Preencher Quantidade em C34)
+Row 34: Designer / Editor de V├¡deo / Tecnologia (Preencher Quantidade em C35)
+Row 35: Customer Success (Preencher Quantidade em C36)
+Row 36: Comercial
+Row 37: Vendedores (Preencher Quantidade em C39)
+Row 39: Despesas Gerais (Subgrupo das operacionais que inclui gastos administrativos (Internet, Contador, Energia).)
+Row 40: Despesas Fixas
+Row 41: CRM
+Row 42: Internet / Telefonia
+Row 43: Contabilidade
+Row 44: Condominio
+Row 45: Energia El├®trica
+Row 46: Aluguel
+Row 47: Google Workspace
+Row 48: Notion
+Row 49: Treinamentos Udemy
+Row 50: Jur├¡dico
+Row 51: Despesas Vari├íveis
+Row 52: An├║ncios Online
+Row 53: D├¡vida inadimplente
+Row 54: Amortiza├º├úo do Ativo Circulante
+Row 56: CAC (Custo de Aquisi├º├úo de Clientes: Quanto a empresa gasta em Marketing e Vendas para conquistar cada novo cliente.) Obs: Nesse caso est├í sendo contabilizado apenas pelo valor do investimento em Tr├ífego Pago
+Row 57: EBITDA (Lucro Operacional: Mostra quanto dinheiro a opera├º├úo gera antes de descontar juros, impostos de lucro e deprecia├º├úo.)
+Row 58: Margem EBITDA (%)
+Row 59: EBIT (Lucro Operacional L├¡quido: Representa o lucro real da opera├º├úo ap├│s considerar o desgaste dos bens (deprecia├º├úo) e investimentos (amortiza├º├úo), mas antes de juros e impostos.)
+Row 60: Despesa de juros
+Row 61: EBT (Lucro Antes dos Impostos: O lucro real ap├│s pagar todas as despesas operacionais e financeiras (juros de d├¡vidas).)
+Row 62: Despesa/Benef├¡cio com Imposto de Renda
+Row 63: Receita L├¡quida (├ë o resultado final ap├│s todas as dedu├º├Áes poss├¡veis.)
+Row 64: Resultado L├¡quido (%)

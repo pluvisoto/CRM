@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { LayoutDashboard, Trello, Users, Settings, BarChart3, MessageSquare, LogOut, ChevronRight, ChevronDown, Plus, Shield } from 'lucide-react';
+import { LayoutDashboard, Trello, Users, Settings, BarChart3, MessageSquare, LogOut, ChevronRight, ChevronDown, Plus, Shield, Target } from 'lucide-react';
 import { supabase } from '../lib/supabaseClient';
 
 const Sidebar = () => {
@@ -50,6 +50,7 @@ const Sidebar = () => {
 
     { icon: BarChart3, label: 'Relatórios', path: '/reports' },
     ...(role === 'admin' ? [{ icon: Shield, label: 'Equipe', path: '/team' }] : []),
+    { icon: Target, label: 'Metas', path: '/goals-config' },
     { icon: Settings, label: 'Configurações', path: '/settings' },
   ];
 

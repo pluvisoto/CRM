@@ -3,6 +3,7 @@ import MainLayout from './layouts/MainLayout';
 import Finance from './pages/Finance';
 import Login from './pages/Login';
 import Settings from './pages/Settings';
+import GoalsConfiguration from './pages/GoalsConfiguration';
 import TeamSettings from './pages/TeamSettings';
 import Pipeline from './pages/Pipeline';
 
@@ -56,6 +57,7 @@ function App() {
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="reports" element={<Reports />} />
           <Route path="settings" element={<Settings />} />
+          <Route path="goals-config" element={<GoalsConfiguration />} /> {/* Added route */}
           <Route path="team" element={<TeamSettings />} />
           <Route path="finance/*" element={
             <ErrorBoundary>

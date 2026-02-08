@@ -36,6 +36,9 @@ import EditDealModal from '../components/Deals/EditDealModal';
 import ImportModal from '../components/Import/ImportModal';
 import { supabase } from '../lib/supabaseClient';
 import { useAuth } from '../contexts/AuthContext';
+import financeService from '../services/financeService';
+import whatsappService from '../services/whatsappService';
+
 import { getSyncColor } from '../utils/colors';
 
 const Pipeline = () => {
@@ -76,6 +79,10 @@ const Pipeline = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [filterOwner, setFilterOwner] = useState('all'); // 'all' | 'me'
     const [isFilterOpen, setIsFilterOpen] = useState(false);
+
+    // --- REFS FOR DRAG TRACKING ---
+    const dragStartColumnRef = useRef(null);
+
 
     // PIPELINE DEFINITIONS - STANDARDIZED IDs (v2.0)
     const PIPELINE_CONFIG = {
@@ -408,9 +415,18 @@ const Pipeline = () => {
     );
 
     const handleDragStart = (event) => {
-        console.log(`%c 🛫 DragStart: ${event.active.id}`, 'color: #3b82f6; font-weight: bold;');
-        setActiveId(event.active.id);
+        const { active } = event;
+        console.log(`%c 🛫 DragStart: ${active.id}`, 'color: #3b82f6; font-weight: bold;');
+
+        const deal = deals.find(d => d.id === active.id);
+        if (deal) {
+            dragStartColumnRef.current = deal.stage || deal.columnId;
+            console.log(`   Initial Stage: ${dragStartColumnRef.current}`);
+        }
+
+        setActiveId(active.id);
     };
+
 
     const handleDragOver = (event) => {
         const { active, over } = event;
@@ -431,13 +447,20 @@ const Pipeline = () => {
         }
 
         if (overColumnId && activeDeal.columnId !== overColumnId) {
+            // Optimization: Only update if strictly necessary to avoid loops
             setDeals((items) => {
                 const activeIndex = items.findIndex((i) => i.id === activeId);
+                if (activeIndex === -1) return items;
+
                 const newItems = [...items];
+                if (newItems[activeIndex].columnId === overColumnId) return items;
+
                 newItems[activeIndex].columnId = overColumnId;
-                return arrayMove(newItems, activeIndex, activeIndex);
+                newItems[activeIndex].stage = overColumnId; // Keep sync
+                return newItems;
             });
         }
+
     };
 
     const handleAddColumn = async () => {
@@ -626,26 +649,23 @@ const Pipeline = () => {
 
     const handleDragEnd = async (event) => {
         const { active, over } = event;
+        setActiveId(null);
         if (!over) return;
 
         const activeId = active.id;
         const overId = over.id;
 
-        // Check if dragging a column
+        // Column Dragging
         const activeColumnIndex = columns.findIndex(c => c.id === activeId);
         const overColumnIndex = columns.findIndex(c => c.id === overId);
 
         if (activeColumnIndex !== -1 && overColumnIndex !== -1) {
             if (activeId !== overId) {
                 const newColumns = arrayMove(columns, activeColumnIndex, overColumnIndex);
-
-                // Re-assign positions locally for clarity
                 const orderedColumns = newColumns.map((col, index) => ({ ...col, position: index }));
-
                 setColumns(orderedColumns);
                 updateStageOrder(orderedColumns);
             }
-            setActiveId(null);
             return;
         }
 
@@ -658,20 +678,18 @@ const Pipeline = () => {
             if (overDeal) newColumnId = overDeal.columnId;
         }
 
-        console.log(`%c 🎯 DragEnd: active=${activeId}, over=${overId}, targetColumn=${newColumnId}`, 'color: #8b5cf6;');
-
         if (newColumnId) {
             const originalDealData = active.data.current?.deal;
-            const originalStage = originalDealData?.stage || originalDealData?.columnId;
+            const originalStage = dragStartColumnRef.current;
 
-            // Compare with ORIGINAL stage from data, not the one already updated in state by onDragOver
+            console.log(`%c 🎯 DragEnd Process: active=${activeId}, startStage=${originalStage}, targetColumn=${newColumnId}`, 'color: #8b5cf6;');
+
             if (originalStage !== newColumnId) {
-                // UPDATE LOCAL STATE (Unified stage and columnId)
+                // UPDATE LOCAL STATE
                 setDeals(prev => prev.map(d => d.id === activeId ? { ...d, columnId: newColumnId, stage: newColumnId } : d));
 
                 try {
                     console.log(`%c 💾 Persisting deal ${activeId} to db (stage: ${newColumnId})...`, 'color: #3b82f6;');
-                    // Use select() to confirm if any row was actually modified (RLS Check)
                     const { data: updatedData, error } = await supabase
                         .from('central_vendas')
                         .update({ stage: newColumnId })
@@ -679,24 +697,99 @@ const Pipeline = () => {
                         .select();
 
                     if (error) throw error;
-
-                    if (!updatedData || updatedData.length === 0) {
-                        throw new Error('Permissão negada ou erro de autorização no Supabase.');
-                    }
+                    if (!updatedData || updatedData.length === 0) throw new Error('Permissão negada ou erro no Supabase.');
 
                     console.log(`%c ✅ Deal ${activeId} SAVED SUCCESSFULLY.`, 'color: #10b981; font-weight: bold;');
+
+                    // --- FINANCIAL INTEGRATION TRIGGER ---
+                    const targetColumn = columns.find(c => c.id === newColumnId);
+                    const origCol = columns.find(c => c.id === originalStage);
+
+                    const checkWon = (col) => {
+                        if (!col) return false;
+                        const name = (col.title || col.name || '').toUpperCase();
+                        return col.status === 'won' || name.includes('FECHA') || name.includes('GANHO') || name.includes('WON');
+                    };
+
+                    const wasWon = checkWon(origCol);
+                    const isNowWon = checkWon(targetColumn);
+
+                    console.log(`[DRAG SYNC] wasWon: ${wasWon}, isNowWon: ${isNowWon}`);
+
+                    if (isNowWon && !wasWon) {
+                        const dealData = deals.find(d => d.id === activeId) || originalDealData;
+                        if (dealData) {
+                            // 1. CONFIRM ONBOARDING
+                            const confirmOnboarding = window.confirm(`🎉 Venda Confirmada: ${dealData.empresa_cliente || dealData.title}! \n\nDeseja iniciar o Onboarding Automático (WhatsApp) e sincronizar com o Financeiro?`);
+
+                            // 2. EXECUTE FINANCE (Always, or conditional? Let's treat valid 'Won' as financial event)
+                            // Ideally we sync finance if confirmed, or maybe separate. 
+                            // For now, let's link them to the confirmation to avoid partial states if user cancels "Onboarding" but gets "Finance" silently.
+                            // Actually, let's trust the user intent on "Won" -> Finance is standard backend logic. Onboarding is client facing.
+                            // I will run Finance regardless (as per previous logic) but maybe suppress alert if redundant, 
+                            // OR better: run both if confirmed. IF cancelled, maybe they just moved by mistake? 
+                            // Safety: Run Finance as default business rule. Ask for Onboarding.
+
+                            console.log('%c 🚀 Triggering Financial Sync...', 'color: #10b981;');
+                            financeService.syncSaleFromDeal({
+                                ...dealData,
+                                id: activeId,
+                                title: dealData.empresa_cliente || dealData.title,
+                                faturamento_mensal: parseFloat(dealData.faturamento_mensal || dealData.value || 0)
+                            })
+                                .then(() => {
+                                    // Silent success log to not spam alerts, or simple toast
+                                    console.log('✅ Venda sincronizada com o financeiro!');
+                                })
+                                .catch(e => {
+                                    console.error('Financial sync failed:', e);
+                                    alert('⚠️ Erro no financeiro: ' + e.message);
+                                });
+
+                            // 3. EXECUTE ONBOARDING (If confirmed)
+                            if (confirmOnboarding) {
+                                whatsappService.sendAutomatedOnboarding(dealData.whatsapp || '', dealData)
+                                    .then(result => {
+                                        if (result.success) {
+                                            alert(`✅ Onboarding Iniciado! \nStatus: ${result.message || 'Enviado'}`);
+                                        } else {
+                                            // Fallback to manual
+                                            const link = whatsappService.generateOnboardingLink(dealData.whatsapp || '', dealData);
+                                            // Ensure we check for actual link existence (phone might be missing)
+                                            if (link) {
+                                                if (window.confirm(`⚠️ Não foi possível enviar automaticamente.\nErro: ${result.error}\n\nDeseja abrir o WhatsApp Web para enviar manualmente?`)) {
+                                                    window.open(link, '_blank');
+                                                }
+                                            } else {
+                                                alert('⚠️ Erro no envio e sem telefone cadastrado para link manual.');
+                                            }
+                                        }
+                                    });
+                            }
+                        }
+                    } else if (wasWon && !isNowWon) {
+                        console.log('%c 🔄 Triggering Rollback Prompt...', 'color: #f59e0b;');
+                        const confirmed = window.confirm('⚠️ Você moveu um negócio FECHADO para uma etapa aberta. Deseja APAGAR os lançamentos financeiros automáticos criados para este negócio?');
+                        if (confirmed) {
+                            financeService.rollbackSaleSync(activeId)
+                                .then(() => alert('🔄 Lançamentos financeiros removidos.'))
+                                .catch(e => {
+                                    console.error('Rollback failed:', e);
+                                    alert('❌ Erro no rollback: ' + e.message);
+                                });
+                        }
+                    }
                 } catch (err) {
                     console.error('Failed to move deal:', err);
-                    alert(`🚨 ERRO DE PERSISTÊNCIA: ${err.message || 'Erro de conexão'}.\n\nO card voltará à posição original.`);
-                    fetchCentralDeals(); // Revert to DB state if failed
+                    alert(`🚨 ERRO DE PERSISTÊNCIA: ${err.message || 'Erro de conexão'}.`);
+                    fetchCentralDeals(); // Revert
                 }
             } else {
-                console.log('%c ℹ️ No stage change detected (dropped in same column).', 'color: #6b7280;');
+                console.log('%c ℹ️ No stage change detected.', 'color: #6b7280;');
             }
         }
-
-        setActiveId(null);
     };
+
 
     const handleDeletePipeline = async () => {
         if (!window.confirm("🔴 TEM CERTEZA? \n\nIsso vai apagar este pipeline e suas configurações de colunas.\nOs negócios NÃO serão apagados (eles ficarão visíveis em outros pipelines do mesmo tipo).")) return;
@@ -1304,13 +1397,20 @@ const Pipeline = () => {
                 deal={editingDeal}
                 columns={columns}
                 onDealUpdated={(updatedDeal) => {
+                    console.log(' [PIPELINE] onDealUpdated raw data:', updatedDeal);
                     // Normalize updated deal to have both stage and columnId consistent for current local logic
                     const normalized = {
                         ...updatedDeal,
                         columnId: updatedDeal.stage || updatedDeal.columnId
                     };
-                    setDeals(prev => prev.map(d => d.id === normalized.id ? normalized : d));
+                    console.log(' [PIPELINE] onDealUpdated normalized:', normalized.columnId);
+                    setDeals(prev => {
+                        const newDeals = prev.map(d => d.id === normalized.id ? normalized : d);
+                        console.log(` [PIPELINE] Updated deals count: ${newDeals.length}`);
+                        return newDeals;
+                    });
                 }}
+
                 onDealDeleted={(deletedId) => {
                     setDeals(prev => prev.filter(d => d.id !== deletedId));
                 }}

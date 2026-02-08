@@ -1,0 +1,74 @@
+﻿Scanning sheet: Valores - Lucro e Perda
+Row 1: Receita
+Row 2: Receita Fixa
+Row 3: Mensalidade
+Row 4: Usu├írios
+Row 5: Encargos recorrentes
+Row 6: Receita Vari├ível
+Row 7: Comiss├úo sobre Vendas Recuperadas
+Row 8: Usu├írios
+Row 9: Encargos recorrentes
+Row 10: 
+Row 11: Custo das Vendas
+Row 12: Custos Gerais
+Row 13: Taxas de Checkout e Plataformas
+Row 14: Taxas de Checkout
+Row 15: Ferramentas Operacionais
+Row 16: Servidor
+Row 17: API Oficial Whatsapp
+Row 18: Tokens GPT
+Row 19: Telefone
+Row 20: Custos Espec├¡ficos de Receita
+Row 21: Custos de Pessoal (M├úo de Obra Direta)
+Row 22: 
+Row 23: Margem Bruta
+Row 24: Margem Bruta (%)
+Row 25: 
+Row 26: Despesa Operacional
+Row 27: Despesa com Folha de Pagamento (M├úo de Obra Indireta)
+Row 28: Administra├º├úo
+Row 29: Pro Labore - CEO
+Row 30: Pro Labore - Operacional
+Row 31: Auxiliar de Servi├ºos Gerais
+Row 32: Operacional
+Row 33: Desenvolvedor
+Row 34: Gestor de Tr├ífego
+Row 35: Designer / Editor de V├¡deo
+Row 36: Comercial
+Row 37: Vendedores
+Row 38: Customer Success
+Row 39: Despesas Gerais
+Row 40: Despesas Fixas
+Row 41: CRM
+Row 42: Internet / Telefonia
+Row 43: Contabilidade
+Row 44: Condominio
+Row 45: Energia El├®trica
+Row 46: Aluguel
+Row 47: Google Workspace
+Row 48: Notion
+Row 49: Treinamentos Udemy
+Row 50: Jur├¡dico
+Row 51: Despesas Vari├íveis
+Row 52: Pagamento Multiplo Diego AM Engenharia
+Row 53: An├║ncios Online
+Row 54: D├¡vida inadimplente
+Row 55: Amortiza├º├úo do Ativo Circulante
+Row 56: 
+Row 57: EBITDA
+Row 58: 
+Row 59: Despesa adicional
+Row 60: Deprecia├º├úo de Longo Prazo
+Row 61: Ganho ou perda com venda de ativos
+Row 62: EBIT
+Row 63: Despesa de juros
+Row 64: EBT
+Row 65: Despesa/Benef├¡cio com Imposto de Renda
+Row 66: 
+Row 67: Despesa total
+Row 68: Resultado l├¡quido
+Row 69: Resultado l├¡quido (%)
+Row 70: 
+Row 71: Abertura de Lucros Retidos
+Row 72: Distribui├º├úo do Propriet├írio
+Row 73: Fechamento de Lucros Retidos

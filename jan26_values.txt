@@ -1,0 +1,64 @@
+﻿
+All rows with Jan 26 values:
+Row  1 :  Receita                                   | R$ 8,358
+Row  2 :  Receita Fixa                              | R$ 5,970
+Row  3 :      Mensalidade                           | R$ 5,970
+Row  4 :  Receita Vari├ível                          | R$ 2,388
+Row  5 :      Comiss├úo sobre Vendas Recuperadas     | R$ 2,388
+Row  7 :  Custo das Vendas                          | R$ 2,510
+Row  8 :  Custos Gerais                             | R$ 2,510
+Row  9 :      Taxas de Checkout e Plataformas       | R$ 10
+Row 10 :          Taxas de Checkout                 | R$ 10
+Row 11 :      Ferramentas Operacionais              | R$ 2,500
+Row 12 :          Servidor                          | R$ 100
+Row 13 :          API Oficial Whatsapp              | R$ 2,000
+Row 14 :          Tokens GPT                        | R$ 100
+Row 15 :          Telefone                          | R$ 300
+Row 16 :  Custos Espec├¡ficos de Receita             | R$ 0
+Row 17 :  Custos de Pessoal (M├úo de Obra Direta)    | R$ 0
+Row 19 :  Margem Bruta                              | R$ 5,848
+Row 20 :  Margem Bruta (%)                          | 70%
+Row 22 :  Despesa Operacional                       | R$ 32,780
+Row 23 :  Despesa com Folha de Pagamento (M├úo de    | R$ 19,100
+Row 24 :      Administra├º├úo                         | R$ 12,100
+Row 25 :          Pro Labore - CEO                  | R$ 4,440
+Row 26 :          Pro Labore - Operacional          | R$ 6,660
+Row 27 :          Auxiliar de Servi├ºos Gerais       | R$ 1,000
+Row 28 :      Operacional                           | R$ 6,000
+Row 29 :          Desenvolvedor                     | R$ 2,000
+Row 30 :          Gestor de Tr├ífego                 | R$ 2,000
+Row 31 :          Designer / Editor de V├¡deo        | R$ 2,000
+Row 32 :      Comercial                             | R$ 1,000
+Row 33 :          Vendedores                        | R$ 0
+Row 34 :          Customer Success                  | R$ 1,000
+Row 35 :  Despesas Gerais                           | R$ 13,680
+Row 36 :      Despesas Fixas                        | R$ 8,680
+Row 37 :          CRM                               | R$ 396
+Row 38 :          Internet / Telefonia              | R$ 500
+Row 39 :          Contabilidade                     | R$ 1,000
+Row 40 :          Condominio                        | R$ 500
+Row 41 :          Energia El├®trica                  | R$ 500
+Row 42 :          Aluguel                           | R$ 2,000
+Row 43 :          Google Workspace                  | R$ 686
+Row 44 :          Notion                            | R$ 1,050
+Row 45 :          Treinamentos Udemy                | R$ 48
+Row 46 :          Jur├¡dico                          | R$ 2,000
+Row 47 :      Despesas Vari├íveis                    | R$ 5,000
+Row 48 :          Pagamento Multiplo Diego AM Eng   | R$ 0
+Row 49 :          An├║ncios Online                   | R$ 5,000
+Row 50 :  D├¡vida inadimplente                       | R$ 0
+Row 51 :  Amortiza├º├úo do Ativo Circulante           | R$ 0
+Row 53 :  EBITDA                                    | (R$ 26,932)
+Row 55 :  Despesa adicional                         | R$ 0
+Row 56 :  Deprecia├º├úo de Longo Prazo                | R$ 0
+Row 57 :  Ganho ou perda com venda de ativos        | R$ 0
+Row 58 :  EBIT                                      | (R$ 26,932)
+Row 59 :  Despesa de juros                          | R$ 0
+Row 60 :  EBT                                       | (R$ 26,932)
+Row 61 :  Despesa/Benef├¡cio com Imposto de Renda    | R$ 0
+Row 63 :  Despesa total                             | R$ 35,290
+Row 64 :  Resultado l├¡quido                         | (R$ 26,932)
+Row 65 :  Resultado l├¡quido (%)                     | (322%)
+Row 67 :  Abertura de Lucros Retidos                | R$ 0
+Row 68 :  Distribui├º├úo do Propriet├írio              | R$ 0
+Row 69 :  Fechamento de Lucros Retidos              | (R$ 26,932)

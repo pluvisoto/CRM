@@ -1,0 +1,13 @@
+Sheet: Valores - Lucro e Perda
+RowCount: 1000
+
+Row 1: [Col1: "null", Col2: "Jan '26", Col3: "Feb '26", Col4: "Mar '26", Col5: "Apr '26", ]
+Row 2: [Col1: " Receita", Col2: "8358", Col3: "16548.84", Col4: "24572.52", Col5: "32437.4", ]
+Row 3: [Col1: " Receita Fixa", Col2: "5970", Col3: "11820.6", Col4: "17551.8", Col5: "23169.57", ]
+Row 4: [Col1: "     Mensalidade", Col2: "5970", Col3: "11820.6", Col4: "17551.8", Col5: "23169.57", ]
+Row 5: [Col1: "         Usuários", Col2: "10", Col3: "19.8", Col4: "29.4", Col5: "38.81", ]
+Row 6: [Col1: "         Encargos recorrentes", Col2: "597", Col3: "597", Col4: "597", Col5: "597", ]
+Row 7: [Col1: " Receita Variável", Col2: "2388", Col3: "4728.24", Col4: "7020.72", Col5: "9267.83", ]
+Row 8: [Col1: "     Comissão sobre Vendas Recuperadas", Col2: "2388", Col3: "4728.24", Col4: "7020.72", Col5: "9267.83", ]
+Row 9: [Col1: "         Usuários", Col2: "10", Col3: "19.8", Col4: "29.4", Col5: "38.81", ]
+Row 10: [Col1: "         Encargos recorrentes", Col2: "238.8", Col3: "238.8", Col4: "238.8", Col5: "238.8", ]

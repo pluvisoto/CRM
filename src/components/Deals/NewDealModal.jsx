@@ -3,7 +3,9 @@ import React, { useState } from 'react';
 import { X, Save } from 'lucide-react';
 import { supabase } from '../../lib/supabaseClient';
 import { useAuth } from '../../contexts/AuthContext';
+import financeService from '../../services/financeService';
 import { logActivity } from '../../utils/logger';
+
 
 const NewDealModal = ({ isOpen, onClose, onDealCreated, columns, pipelineType = 'Receptivo' }) => {
     const { user } = useAuth();
@@ -66,7 +68,33 @@ const NewDealModal = ({ isOpen, onClose, onDealCreated, columns, pipelineType = 
                     tags: []
                 });
 
+                // --- FINANCIAL INTEGRATION TRIGGER ---
+                const selectedColumn = columns.find(c => c.id === startColumn);
+                const colName = (selectedColumn?.title || selectedColumn?.name || '').toUpperCase();
+
+                // Closure stages usually contain "FECHA", "GANHO", "WON" or have status "won"
+                const isWon = colName.includes('FECHA') || colName.includes('GANHO') || colName.includes('WON') || selectedColumn?.status === 'won';
+
+                console.log(`[DEAL CREATE] Stage: ${colName}, isWon: ${isWon}`);
+
+                if (isWon) {
+                    console.log('%c 🚀 Triggering Financial Sync (New Deal)...', 'color: #10b981;');
+                    financeService.syncSaleFromDeal({
+                        id: newDeal.id,
+                        title: formData.company,
+                        empresa_cliente: formData.company,
+                        faturamento_mensal: parseFloat(formData.value || 0)
+                    })
+                        .then(() => alert('✅ Venda registrada no financeiro com sucesso!'))
+                        .catch(e => {
+                            console.error('Financial sync failed:', e);
+                            alert('⚠️ Erro na sincronização financeira: ' + e.message);
+                        });
+                }
+
+
                 await logActivity({
+
                     actionType: 'CREATE',
                     entityType: 'DEAL',
                     entityId: newDeal.id,
