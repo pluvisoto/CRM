@@ -2,10 +2,14 @@
 import React, { useState, useEffect } from 'react';
 import { X, Save, Trash2, Instagram, MessageCircle, FileText, CheckSquare, Paperclip, Layout } from 'lucide-react';
 import { supabase } from '../../lib/supabaseClient';
+import financeService from '../../services/financeService';
+import whatsappService from '../../services/whatsappService';
 import { logActivity } from '../../utils/logger';
+
 import NotesTab from './Tabs/NotesTab';
 import TasksTab from './Tabs/TasksTab';
 import FilesTab from './Tabs/FilesTab';
+import ContractTab from './Tabs/ContractTab';
 
 const EditDealModal = ({ isOpen, onClose, deal, columns, onDealUpdated, onDealDeleted }) => {
     // UI Version: 2.5 (Fully Synchronized, Commission Removed)
@@ -18,7 +22,8 @@ const EditDealModal = ({ isOpen, onClose, deal, columns, onDealUpdated, onDealDe
         value: '',
         column_id: '',
         instagram: '',
-        whatsapp: ''
+        whatsapp: '',
+        closing_date: ''
     });
 
     useEffect(() => {
@@ -29,7 +34,8 @@ const EditDealModal = ({ isOpen, onClose, deal, columns, onDealUpdated, onDealDe
                 value: deal.faturamento_mensal || deal.faturamento || deal.value || 0,
                 column_id: deal.stage || deal.columnId || deal.column_id || '',
                 instagram: deal.instagram || '',
-                whatsapp: deal.whatsapp || ''
+                whatsapp: deal.whatsapp || '',
+                closing_date: deal.data_fechamento ? new Date(deal.data_fechamento).toISOString().slice(0, 16) : ''
             });
             setActiveTab('general'); // Reset tab on open
         }
@@ -47,6 +53,20 @@ const EditDealModal = ({ isOpen, onClose, deal, columns, onDealUpdated, onDealDe
         setLoading(true);
 
         try {
+            // AUTOMATIC CLOSING DATE LOGIC
+            const selectedColumn = columns.find(c => c.id === formData.column_id);
+            const isClosingStage = selectedColumn?.status === 'won' || selectedColumn?.status === 'lost';
+
+            // If moving to closed stage: Set NOW() if not already set
+            // If moving back to active: Set NULL
+            // Keep existing date if just editing details within closed stage
+
+            let finalClosingDate = isClosingStage
+                ? (deal.data_fechamento || new Date().toISOString())
+                : null;
+
+            // Override if user manually cleared it (not possible anymore via UI, but good for logic safety)
+
             const { data, error } = await supabase
                 .from('central_vendas')
                 .update({
@@ -55,7 +75,8 @@ const EditDealModal = ({ isOpen, onClose, deal, columns, onDealUpdated, onDealDe
                     faturamento_mensal: parseFloat(formData.value || 0),
                     stage: formData.column_id,
                     instagram: formData.instagram,
-                    whatsapp: formData.whatsapp
+                    whatsapp: formData.whatsapp,
+                    data_fechamento: finalClosingDate
                 })
                 .eq('id', deal.id)
                 .select();
@@ -78,6 +99,62 @@ const EditDealModal = ({ isOpen, onClose, deal, columns, onDealUpdated, onDealDe
                     user_id: updatedDeal.created_by,
                     tags: deal.tags || []
                 });
+                // --- FINANCIAL INTEGRATION TRIGGER ---
+                const originalColumn = columns.find(c => c.id === deal.stage || c.id === deal.columnId);
+                const wasWon = originalColumn?.title?.toUpperCase().includes('FECHA') || originalColumn?.title?.toUpperCase().includes('GANHO') || originalColumn?.status === 'won';
+
+                const isNowWon = selectedColumn?.title?.toUpperCase().includes('FECHA') || selectedColumn?.title?.toUpperCase().includes('GANHO') || selectedColumn?.status === 'won';
+
+                console.log(`[DEAL EDIT] ${deal.company}: wasWon=${wasWon}, isNowWon=${isNowWon}`);
+
+                if (isNowWon && !wasWon) {
+                    // 1. CONFIRM ONBOARDING
+                    const confirmOnboarding = window.confirm(`🎉 Venda Confirmada: ${formData.company || updatedDeal.empresa_cliente}! \n\nDeseja iniciar o Onboarding Automático (WhatsApp) e sincronizar com o Financeiro?`);
+
+                    // 2. EXECUTE FINANCE
+                    console.log('%c 🚀 Triggering Financial Sync (Edit Move)...', 'color: #10b981;');
+                    financeService.syncSaleFromDeal({
+                        ...formData,
+                        id: deal.id,
+                        title: formData.company || formData.contact_name || deal.title || deal.empresa_cliente,
+                        empresa_cliente: updatedDeal.empresa_cliente,
+                        faturamento_mensal: parseFloat(formData.value || 0)
+                    })
+                        .then(() => console.log('✅ Venda sincronizada com o financeiro!'))
+                        .catch(e => {
+                            console.error('Financial sync failed:', e);
+                            alert('⚠️ Erro no financeiro: ' + e.message);
+                        });
+
+                    // 3. EXECUTE ONBOARDING (If confirmed)
+                    if (confirmOnboarding) {
+                        whatsappService.sendAutomatedOnboarding(formData.whatsapp || deal.whatsapp || '', { ...deal, ...formData })
+                            .then(result => {
+                                if (result.success) {
+                                    alert(`✅ Onboarding Iniciado! \nStatus: ${result.message || 'Enviado'}`);
+                                } else {
+                                    const link = whatsappService.generateOnboardingLink(formData.whatsapp || deal.whatsapp || '', { ...deal, ...formData });
+                                    if (link) {
+                                        if (window.confirm(`⚠️ Não foi possível enviar automaticamente.\nErro: ${result.error}\n\nDeseja abrir o WhatsApp Web para enviar manualmente?`)) {
+                                            window.open(link, '_blank');
+                                        }
+                                    } else {
+                                        alert('⚠️ Erro no envio e sem telefone cadastrado para link manual.');
+                                    }
+                                }
+                            });
+                    }
+                } else if (wasWon && !isNowWon) {
+                    // Accidental removal from "Won"
+                    const confirmed = window.confirm('⚠️ Você alterou um negócio FECHADO para uma etapa aberta. Deseja APAGAR os lançamentos financeiros automáticos vinculados?');
+                    if (confirmed) {
+                        financeService.rollbackSaleSync(deal.id)
+                            .then(() => alert('🔄 Financeiro revertido com sucesso.'))
+                            .catch(e => console.error('Rollback failed:', e));
+                    }
+                }
+
+
 
                 // LOG UPDATE
                 await logActivity({
@@ -94,6 +171,7 @@ const EditDealModal = ({ isOpen, onClose, deal, columns, onDealUpdated, onDealDe
                 });
             }
             onClose();
+
         } catch (error) {
             console.error('Error updating deal:', error);
             alert('Erro ao atualizar negócio: ' + (error.message || 'Erro desconhecido'));
@@ -275,6 +353,9 @@ const EditDealModal = ({ isOpen, onClose, deal, columns, onDealUpdated, onDealDe
                         <button className={`tab-btn ${activeTab === 'files' ? 'active' : ''}`} onClick={() => setActiveTab('files')}>
                             <Paperclip size={16} /> Arquivos
                         </button>
+                        <button className={`tab-btn ${activeTab === 'contract' ? 'active' : ''}`} onClick={() => setActiveTab('contract')}>
+                            <FileText size={16} /> Contrato
+                        </button>
                     </div>
                 </div>
 
@@ -319,6 +400,7 @@ const EditDealModal = ({ isOpen, onClose, deal, columns, onDealUpdated, onDealDe
                     {activeTab === 'notes' && <NotesTab dealId={deal.id} />}
                     {activeTab === 'tasks' && <TasksTab dealId={deal.id} />}
                     {activeTab === 'files' && <FilesTab dealId={deal.id} />}
+                    {activeTab === 'contract' && <ContractTab deal={deal} />}
                 </div>
 
                 <div className="modal-footer">

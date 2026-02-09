@@ -1,0 +1,17 @@
+﻿--- Formulas in Sheet: 2026 ---
+Analyzing first 15 columns of P&L rows...
+[Receita Total] Cell D2: Formula = ROUND(D5+D9,2)
+[Receita Total] Cell E2: Formula = ROUND(E5+E9,2)
+[Receita Total] Cell F2: Formula = ROUND(F5+F9,2)
+[Impostos] Cell D3: Formula = D2*$C$3
+[Impostos] Cell E3: Formula = E2*$C$3
+[Impostos] Cell F3: Formula = F2*$C$3
+[Margem Bruta] Cell D13: Formula = ROUND(D4-D17,2)
+[Margem Bruta] Cell E13: Formula = ROUND(E4-E17,2)
+[Margem Bruta] Cell F13: Formula = ROUND(F4-F17,2)
+[EBITDA] Cell D58: Formula = ROUND(D13-D24,2)
+[EBITDA] Cell E58: Formula = ROUND(E13-E24,2)
+[EBITDA] Cell F58: Formula = ROUND(F13-F24,2)
+[Lucro L├¡quido] Cell D64: Formula = ROUND(D62-D63,2)
+[Lucro L├¡quido] Cell E64: Formula = ROUND(E62-E63,2)
+[Lucro L├¡quido] Cell F64: Formula = ROUND(F62-F63,2)

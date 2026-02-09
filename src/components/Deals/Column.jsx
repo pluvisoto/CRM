@@ -153,15 +153,30 @@ const Column = ({ column, deals, onDealClick, onDeleteColumn, onUpdateTitle, onU
                     />
                   ))}
                 </div>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleSave();
-                  }}
-                  className="bg-emerald-500 text-white px-4 py-1.5 rounded-lg font-bold text-xs uppercase"
-                >
-                  OK
-                </button>
+
+                <div className="flex gap-2">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (window.confirm('Tem certeza que deseja excluir esta fase?')) {
+                        onDeleteColumn(column.id);
+                      }
+                    }}
+                    className="bg-red-500/10 text-red-500 border border-red-500/20 px-3 py-1.5 rounded-lg hover:bg-red-500 hover:text-white transition-colors"
+                    title="Excluir Coluna"
+                  >
+                    <Trash2 size={14} />
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleSave();
+                    }}
+                    className="bg-emerald-500 text-white px-4 py-1.5 rounded-lg font-bold text-xs uppercase"
+                  >
+                    OK
+                  </button>
+                </div>
               </div>
             </div>
           ) : (
@@ -226,7 +241,7 @@ const Column = ({ column, deals, onDealClick, onDeleteColumn, onUpdateTitle, onU
           </div>
         </SortableContext>
       </div>
-    </div>
+    </div >
   );
 };
 

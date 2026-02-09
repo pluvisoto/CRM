@@ -1,0 +1,58 @@
+Jan 2026 Data Analysis (54 records)
+------------------------------------------------
+Categoria                                          | Valor          
+------------------------------------------------
+Despesa total                                      | 37546.5
+Despesas Operacionais                              | 34748
+Despesa com Folha de Pagamento                     | 21100
+Despesas Gerais                                    | 13648
+Administração                                      | 12100
+Operacional                                        | 9000
+Despesas Fixas                                     | 8648
+Receita Total                                      | 8358
+Receita Líquida                                    | 7020.72
+Mensalidade                                        | 5970
+Receita Fixa                                       | 5970
+Despesas Variáveis                                 | 5000
+Anúncios Online                                    | 5000
+Pro Labore - CEO                                   | 4440
+Margem Bruta                                       | 4222.22
+Customer Success                                   | 3000
+Despesas com Vendas                                | 2798.5
+Ferramentas Operacionais                           | 2500
+Comissão sobre Vendas Recuperadas                  | 2388
+Receita Variável                                   | 2388
+Pro Labore - Operacional                           | 2220
+Pro Labore - Operacional                           | 2220
+Pro Labore - Operacional                           | 2220
+Designer / Editor de Vídeo / Tecnologia            | 2000
+API Oficial Whatsapp                               | 2000
+Desenvolvedor                                      | 2000
+Gestor de Tráfego                                  | 2000
+Aluguel                                            | 2000
+Jurídico                                           | 2000
+Impostos                                           | 1337.28
+Notion                                             | 1200
+Contabilidade                                      | 1000
+Auxiliar de Serviços Gerais                        | 1000
+CAC                                                | 900
+Google Workspace                                   | 600
+Mensalidade por Cliente                            | 597
+Condominio                                         | 500
+Internet / Telefonia                               | 500
+Energia Elétrica                                   | 500
+Telefone                                           | 300
+CRM                                                | 300
+Taxas de Checkout e Plataformas                    | 298.5
+Média - Suposição de Comissão por Cliente          | 238.8
+Servidor                                           | 100
+Tokens GPT                                         | 100
+Treinamentos Udemy                                 | 48
+Usuários                                           | 10
+Resultado Bruto                                    | 0.51
+Resultado Líquido                                  | -4.35
+Margem EBITDA                                      | -4.35
+EBIT                                               | -30525.78
+EBITDA                                             | -30525.78
+EBT                                                | -30525.78
+Resultado Líquido                                  | -30525.78

@@ -1,0 +1,163 @@
+{
+  "receitas": {
+    "fixa": [
+      {
+        "label": "Receita Fixa - Mensalidade",
+        "BP_2026": 5970,
+        "REAL_2026": 2985
+      }
+    ],
+    "variavel": [
+      {
+        "label": "Receita Variável - Comissão sobre Vendas Recuperadas",
+        "BP_2026": 2388,
+        "REAL_2026": 925
+      }
+    ]
+  },
+  "impostos": [
+    {
+      "label": "Impostos",
+      "BP_2026": 1337.28,
+      "REAL_2026": 625.6
+    }
+  ],
+  "despesas_variaveis": [
+    {
+      "label": "Despesas Variáveis",
+      "BP_2026": 2798.5,
+      "REAL_2026": 0
+    },
+    {
+      "label": "Servidor",
+      "BP_2026": 100,
+      "REAL_2026": 50
+    },
+    {
+      "label": "API Oficial Whatsapp",
+      "BP_2026": 2000,
+      "REAL_2026": 1000
+    },
+    {
+      "label": "Tokens GPT",
+      "BP_2026": 100,
+      "REAL_2026": 50
+    },
+    {
+      "label": "Telefone",
+      "BP_2026": 300,
+      "REAL_2026": 150
+    }
+  ],
+  "despesas_fixas": {
+    "salarios": [
+      {
+        "label": "Pro Labore - CEO",
+        "BP_2026": 4440,
+        "REAL_2026": 0
+      },
+      {
+        "label": "Pro Labore - Operacional",
+        "BP_2026": 2220,
+        "REAL_2026": 0
+      },
+      {
+        "label": "Pro Labore - Operacional",
+        "BP_2026": 2220,
+        "REAL_2026": 0
+      },
+      {
+        "label": "Pro Labore - Operacional",
+        "BP_2026": 2220,
+        "REAL_2026": 0
+      },
+      {
+        "label": "Auxiliar de Serviços Gerais",
+        "BP_2026": 1000,
+        "REAL_2026": 0
+      },
+      {
+        "label": "Desenvolvedor",
+        "BP_2026": 2000,
+        "REAL_2026": 0
+      },
+      {
+        "label": "Gestor de Tráfego",
+        "BP_2026": 2000,
+        "REAL_2026": 0
+      },
+      {
+        "label": "Designer / Editor de Vídeo / Tecnologia",
+        "BP_2026": 2000,
+        "REAL_2026": 0
+      },
+      {
+        "label": "Customer Success",
+        "BP_2026": 3000,
+        "REAL_2026": 0
+      },
+      {
+        "label": "Vendedores",
+        "BP_2026": 0,
+        "REAL_2026": 0
+      }
+    ],
+    "administrativo": [
+      {
+        "label": "CRM",
+        "BP_2026": 300,
+        "REAL_2026": 0
+      },
+      {
+        "label": "Internet / Telefonia",
+        "BP_2026": 500,
+        "REAL_2026": 0
+      },
+      {
+        "label": "Contabilidade",
+        "BP_2026": 1000,
+        "REAL_2026": 0
+      },
+      {
+        "label": "Condominio",
+        "BP_2026": 500,
+        "REAL_2026": 0
+      },
+      {
+        "label": "Energia Elétrica",
+        "BP_2026": 500,
+        "REAL_2026": 0
+      },
+      {
+        "label": "Aluguel",
+        "BP_2026": 2000,
+        "REAL_2026": 0
+      },
+      {
+        "label": "Google Workspace",
+        "BP_2026": 600,
+        "REAL_2026": 0
+      },
+      {
+        "label": "Notion",
+        "BP_2026": 1200,
+        "REAL_2026": 0
+      },
+      {
+        "label": "Treinamentos Udemy",
+        "BP_2026": 48,
+        "REAL_2026": 0
+      },
+      {
+        "label": "Jurídico",
+        "BP_2026": 2000,
+        "REAL_2026": 0
+      },
+      {
+        "label": "Anúncios Online",
+        "BP_2026": 10000,
+        "REAL_2026": 0
+      }
+    ]
+  }
+}
